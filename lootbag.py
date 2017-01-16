@@ -1,6 +1,7 @@
 class Lootbag(object):
 
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.children = set()
         self.all_toys = []
 
@@ -24,5 +25,13 @@ class Lootbag(object):
             kids.append(child.name)
         return kids
 
+
+    def toys_delivered(self):
+        delivered_toys = []
+        for child in self.children:
+            if child.delivery_status is True:
+                delivered_toys.extend(child.toys)
+        return delivered_toys
+
     def __str__(self):
-        return "This bag has these children: {} and these toys: {}".format(str(self.get_all_kids()).strip('[]'), str(self.get_toy_list()).strip('[]'))
+        return "This bag has these children: {} and these toys: {}, of which these {} have been delivered".format(str(self.get_all_kids()).strip('[]'), str(self.get_toy_list()).strip('[]'), str(self.toys_delivered()).strip('[]'))

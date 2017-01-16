@@ -15,7 +15,7 @@ class TestLootbag(unittest.TestCase):
     def setUpClass(self):
         print ('Set up class')
         #Create initial instance
-        self.delivery_bag = Lootbag()
+        self.delivery_bag = Lootbag("delivery bag")
 
     # @classmethod
     #     def tearDownClass(self):
@@ -45,11 +45,26 @@ class TestLootbag(unittest.TestCase):
 
     def test_listAllChildrenInDeliveryBag(self):
         #Check if you can get a list of the children in the delivery bag
+        zoe = Child('basketball', 'Zoe')
+        self.delivery_bag.add_child(zoe)
+        trent = Child('pony', 'Trent')
+        self.delivery_bag.add_child(trent)
         list_of_all_kids = []
         for child in self.delivery_bag.children:
             list_of_all_kids.append(child.name)
         self.assertEqual(list_of_all_kids, self.delivery_bag.get_all_kids())
 
+    def test_toysDelivered(self):
+        #Check which toys are delivered
+        zoe = Child('basketball', 'Zoe')
+        self.delivery_bag.add_child(zoe)
+        trent = Child('pony', 'Trent')
+        self.delivery_bag.add_child(trent)
+        list_of_all_delivered_toys = []
+        for child in self.delivery_bag.children:
+            if child.delivery_status is True:
+                list_of_all_delivered_toys.append(child.toys)
+        self.assertEqual(list_of_all_delivered_toys, self.delivery_bag.toys_delivered())
     def test_removeToy(self):
         #Check if you can remove a toy from a child
         drake = Child('basketball', 'Drake')
@@ -78,6 +93,6 @@ class TestLootbag(unittest.TestCase):
         whitney = Child('Bike', 'Whitney')
         whitney.remove_all_toys()
         self.assertFalse(whitney.toys)
-    
+
 if __name__ == '__main__':
     unittest.main()
