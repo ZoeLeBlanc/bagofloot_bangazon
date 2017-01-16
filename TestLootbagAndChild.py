@@ -17,74 +17,67 @@ class TestLootbag(unittest.TestCase):
         #Create initial instance
         self.delivery_bag = Lootbag()
 
-    @classmethod
-        def tearDownClass(self):
-        print('Tear down class')
+    # @classmethod
+    #     def tearDownClass(self):
+    #     print('Tear down class')
     
-    def addChildAndGiftToDelivery(self):
+    def test_addChildAndGiftToDelivery(self):
         #Checks if you can add a child with a gift to the delivery bag
-        zoe = Child('Zoe')
-        zoe.toys = 'pony'
+        zoe = Child('pony', 'Zoe')
         self.delivery_bag.add_child(zoe)
         self.assertIn(zoe, self.delivery_bag.children)
 
-    def removeChildAndAllTheirGiftsFromDelivery(self):
+    def test_removeChildAndAllTheirGiftsFromDelivery(self):
         #checks if you can remove a child and all its associated gifts from the deliverybag
-        trent = Child('Trent')
-        trent.toys = ['pony', 'baseball']
+        trent = Child(['pony', 'baseball'], 'Trent')
         self.delivery_bag.add_child(trent)
         self.delivery_bag.remove_child(trent)
         self.assertNotIn(trent, self.delivery_bag.children)
 
-    def getAllToysToBeDelivered(self):
+    def test_getAllToysToBeDelivered(self):
         #Checks if you can get a list of all toys to be delivered
-        zoe = Child('Zoe')
-        zoe.toys = ['pony','basketball']
+        zoe = Child('basketball', 'Zoe')
         self.delivery_bag.add_child(zoe)
-        trent = Child('Trent')
-        trent.toys = ['pony', 'baseball']
+        trent = Child('pony', 'Trent')
         self.delivery_bag.add_child(trent)
         self.delivery_bag.update_toys()
         self.assertEqual(self.delivery_bag.all_toys, self.delivery_bag.get_toy_list())
 
-    def listAllChildrenInDeliveryBag(self):
+    def test_listAllChildrenInDeliveryBag(self):
         #Check if you can get a list of the children in the delivery bag
         list_of_all_kids = []
         for child in self.delivery_bag.children:
-            list_of_all_kids.append(child[0])
+            list_of_all_kids.append(child.name)
         self.assertEqual(list_of_all_kids, self.delivery_bag.get_all_kids())
 
-    def removeGift(self):
-        #Check if you can remove a gift from a child
-        drake = Child('Drake')
-        drake.toys = 'basketball'
-        drake.remove_gift('basketball')
+    def test_removeToy(self):
+        #Check if you can remove a toy from a child
+        drake = Child('basketball', 'Drake')
+        drake.remove_toy('basketball')
         self.assertNotIn('basketball', drake.toys)
 
-    def addGift(self):
-        #Check if you can add a gift to child
-        ike = Child('Ike')
-        ike.add_gift('laptop')    
-        self.assertIn('laptop', ike.toys)
+    def test_addToy(self):
+        #Check if you can add a toy to child
+        ike = Child('laptop', 'Ike')
+        ike.add_toy('bike')    
+        self.assertIn('bike', ike.toys)
 
-    def changeDeliveryStatus(self):
+    def test_changeDeliveryStatus(self):
         #Check if you can change the delivery status of a child
-        steve = Child('Steve')
-        steve.delivery_status = True
+        steve = Child('ipad,', 'Steve')
+        steve.change_delivery_status(True)
         self.assertTrue(steve.delivery_status)
 
-    def listAllOfChildToys(self):
+    def test_listAllOfChildToys(self):
         #Check if you can get a list of the toys for one child
-        whitney = Child('Whitney')
-        whitney.toys = ['Bike', 'laptop', 'clothes']
+        whitney = Child('laptop', 'Whitney')
         self.assertEqual(whitney.toys, whitney.get_all_toys())
 
-    def naughtyChild(self):
+    def test_naughtyChild(self):
         #Check if you can remove all of a child's toys if they're naughty
-        whitney = Child('Whitney')
-        whitney.toys = ['Bike', 'laptop', 'clothes']
+        whitney = Child('Bike', 'Whitney')
         whitney.remove_all_toys()
-        self.assertIsNone(whitney.toys)
+        self.assertFalse(whitney.toys)
     
 if __name__ == '__main__':
     unittest.main()
