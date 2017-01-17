@@ -20,5 +20,5 @@ class Child(object):
     def remove_all_toys(self):
         self.toys = []
 
-    def __str__(self):
-        return "{} has {}, which has the delivery status of {}". format(self.name, str(self.toys).strip('[]'), self.delivery_status)
+    # def __str__(self):
+    #     return "{} has {}, which has the delivery status of {}". format(self.name, str(self.toys).strip('[]'), self.delivery_status)

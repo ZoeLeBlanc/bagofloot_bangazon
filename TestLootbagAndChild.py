@@ -25,14 +25,15 @@ class TestLootbag(unittest.TestCase):
         #Checks if you can add a child with a gift to the delivery bag
         zoe = Child('pony', 'Zoe')
         self.delivery_bag.add_child(zoe)
+        zoe = zoe.name
         self.assertIn(zoe, self.delivery_bag.children)
 
     def test_removeChildAndAllTheirGiftsFromDelivery(self):
         #checks if you can remove a child and all its associated gifts from the deliverybag
         trent = Child(['pony', 'baseball'], 'Trent')
         self.delivery_bag.add_child(trent)
-        self.delivery_bag.remove_child(trent)
-        self.assertNotIn(trent, self.delivery_bag.children)
+        self.delivery_bag.remove_child(trent.name)
+        self.assertNotIn(trent.name, self.delivery_bag.children)
 
     def test_getAllToysToBeDelivered(self):
         #Checks if you can get a list of all toys to be delivered
@@ -50,8 +51,8 @@ class TestLootbag(unittest.TestCase):
         trent = Child('pony', 'Trent')
         self.delivery_bag.add_child(trent)
         list_of_all_kids = []
-        for child in self.delivery_bag.children:
-            list_of_all_kids.append(child.name)
+        for key, item in self.delivery_bag.children.items():
+            list_of_all_kids.extend({item['name']})
         self.assertEqual(list_of_all_kids, self.delivery_bag.get_all_kids())
 
     def test_toysDelivered(self):
@@ -61,9 +62,9 @@ class TestLootbag(unittest.TestCase):
         trent = Child('pony', 'Trent')
         self.delivery_bag.add_child(trent)
         list_of_all_delivered_toys = []
-        for child in self.delivery_bag.children:
-            if child.delivery_status is True:
-                list_of_all_delivered_toys.append(child.toys)
+        for key, item in self.delivery_bag.children.items():
+            if item['delivery_status'] is True:
+                list_of_all_delivered_toys += item['toys']
         self.assertEqual(list_of_all_delivered_toys, self.delivery_bag.toys_delivered())
     def test_removeToy(self):
         #Check if you can remove a toy from a child

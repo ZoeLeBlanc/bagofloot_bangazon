@@ -1,53 +1,35 @@
 import sys
-import json
-from lootbag import *
-from child import *
+from lootbag_db import *
+from child_db import *
 
-
-def main(args):
-    print(args)
-
-def createBag(bag):
-    with open("{}.txt".format(bag), "w+") as new_bag:
-        newBag = Lootbag(bag)
-        # test = newBag.__dict__
-        new_bag.write(newBag.name)
-        new_bag.close()
-
-def addChildrenToBag(child, toys, bag):
-    with open("{}.txt".format(child), "a+") as child_file:
-        new_child = Child(toys, child)
-        newBag.add_child(new_child)
-        print(newBag)
-        child_file.write(str(child.toys).strip('[]') + "\n") 
-    # with open("{}.txt".format(sys.argv[4]), "r") as bag_file: 
-    #     lines = [line.rstrip('\n') for line in bag_file]
-    #     bag_file.close()
-    # with open("{}.txt".format(sys.argv[4]), "a+") as bag_file:
-    #                 for line in lines:
-    #                     if sys.argv[3] is line:
-    #                         print(line)
-                            
-    #                     else:
-    #                         print("test")
-    #                         # bag_file.write(sys.argv[3] + "\n")
 if __name__ == "__main__":
-    main(sys.argv[1:])
-    if "create" == sys.argv[1]:
-        createBag(sys.argv[2])
-    if "add" == sys.argv[1]:
-       addChildrenToBag(sys.argv[3], sys.argv[2], sys.argv[4])
-    if "remove" == sys.argv[1]:
-        with open("{}.txt".format(sys.argv[2]), "r") as child_file:
-            lines = [line.rstrip('\n') for line in child_file]
-            print(lines)
-            child_file.close()
-            with open("{}.txt".format(sys.argv[2]), "w") as child_file:
-                # test = 
-                for line in lines:
-                    if line[1:-1] != sys.argv[3]:
-                        child_file.write(line[1:-1] + "\n")
-            child_file.close()
-    # if "ls" == sys.argv[1]:
-        # if sys.argv[2] 
-
+    test = Lootbag()
+    test_child = Child()
+    # bag commands
+    if sys.argv[1] == "cr":
+        print(sys.argv[2])
+        test = Lootbag(sys.argv[2])
+    elif sys.argv[1] == "rm" and sys.argv[3] == "from":
+        test.remove_child(sys.argv[2], sys.argv[4])
+    elif sys.argv[1] == "ls" and sys.argv[2] == "toys" and sys.argv[3] == "in":
+        test.get_toy_list(sys.argv[4])
+    elif sys.argv[1] == "ls" and sys.argv[2] == "kids" and sys.argv[3] == "in":
+        test.get_all_kids(sys.argv[4])
+    elif sys.argv[1] == "ls" and sys.argv[2] == "deliveries" and sys.argv[3] == "in":
+        test.toys_delivered(sys.argv[4])
+    # child commands
+    elif sys.argv[1] == "add" and sys.argv[3] == "for" and sys.argv[5] =="in" :
+        test_child.create_child(sys.argv[2], sys.argv[4], sys.argv[6])
+    elif sys.argv[1] == "add" and sys.argv[2] == "new":
+        test_child.add_toy(sys.argv[4], sys.argv[3])
+     # NEEDS WORK
+    elif sys.argv[1] == "rm" and sys.argv[3] == "for":
+        test_child.remove_toy(sys.argv[4], sys.argv[2])
+     # NEEDS WORK
+    elif sys.argv[1] == "ud":
+        test_child.change_delivery_status(sys.argv[2], sys.argv[3])
+    elif sys.argv[1] == "ls" and sys.argv[2] == "toys" and sys.argv[3] == "for":
+        test_child.get_all_toys(sys.argv[4])
+    # NEEDS WORK
+    elif sys.argv[1] == "rm" and sys.argv[2] == "toys" and sys.argv[3] == "for":
+        test_child.remove_all_toys(sys.argv[4])
