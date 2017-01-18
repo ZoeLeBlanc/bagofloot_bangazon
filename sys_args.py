@@ -8,7 +8,7 @@ if __name__ == "__main__":
     # bag commands
     if sys.argv[1] == "cr":
         print(sys.argv[2])
-        test = Lootbag(sys.argv[2])
+        test.create_bag(sys.argv[2])
     elif sys.argv[1] == "rm" and sys.argv[3] == "from":
         test.remove_child(sys.argv[2], sys.argv[4])
     elif sys.argv[1] == "ls" and sys.argv[2] == "toys" and sys.argv[3] == "in":
@@ -24,7 +24,6 @@ if __name__ == "__main__":
         test_child.add_toy(sys.argv[4], sys.argv[3])
     elif sys.argv[1] == "rm" and sys.argv[3] == "for":
         test_child.remove_toy(sys.argv[4], sys.argv[2])
-     # SORTA WORK
     elif sys.argv[1] == "ud":
         test_child.change_delivery_status(sys.argv[2], sys.argv[3])
     elif sys.argv[1] == "ls" and sys.argv[2] == "toys" and sys.argv[3] == "for":
