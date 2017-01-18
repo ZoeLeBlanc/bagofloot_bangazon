@@ -48,15 +48,32 @@ def ls(name, item):
 
 @click.command('rm-kid')
 @click.argument('name', required=1)
+@click.argument('toy', default='all')
 @click.option('--item', type=click.Choice(['toys', 'toy']), help="Choose an item to remove from child (toy or all toys)")
-def remove_from_kid(name, item):
+def remove_from_kid(name, toy, item):
     """Remove item from kid"""
     if item == 'toys':
         test_child.remove_all_toys(name)
     if item == 'toy':
-        test_child.remove_toy(name)
+        test_child.remove_toy(name, toy)
 
-lootbag.add_command(rm-kid)
+@click.command('rm-bag')
+@click.argument('name', required=1)
+@click.argument('bag', required=1)
+def remove_from_bag(name, bag):
+    """Remove item from kid"""
+    test.remove_child(name, bag)
+
+@click.command('add')
+@click.argument('name', required=1)
+@click.argument('toy', required=1)
+def add_toy(name, toy):
+    """Remove item from kid"""
+    test_child.add_toy(name, toy)
+
+lootbag.add_command(add_toy)
+lootbag.add_command(remove_from_bag)
+lootbag.add_command(remove_from_kid)
 lootbag.add_command(ls)
 lootbag.add_command(create)
 
