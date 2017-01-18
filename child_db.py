@@ -6,21 +6,23 @@ class Child(object):
         print(self)
 
     def create_child(self, toy, child, bag):
-         with sqlite3.connect('bagofloot.db') as conn:
+        with sqlite3.connect('bagofloot.db') as conn:
             c = conn.cursor()
             c.execute("SELECT LootbagId FROM Lootbag WHERE Name='{}'".format(bag))
             selected_bag = c.fetchall()
+            print(selected_bag)
             try: 
                 c.execute("INSERT INTO Child VALUES (?, ?, ?, ?)", (None, child, 0, selected_bag[0][0]))
             except sqlite3.OperationalError:
                 pass
-            
             c.execute("SELECT ChildId FROM Child WHERE Name='{}'".format(child))
             selected_child = c.fetchall()
+            print(selected_child)
             try:
                 c.execute("INSERT INTO Toy VALUES (?, ?, ?)", (None, toy, selected_child[0][0]))
             except sqlite3.OperationalError:
                 pass
+        conn.close()        
 
     def add_toy(self, child, toy):
         with sqlite3.connect('bagofloot.db') as conn:
@@ -40,22 +42,25 @@ class Child(object):
             c.execute("SELECT ChildId FROM Child WHERE Name='{}'".format(child))
             selected_child = c.fetchall()
             try:
-                c.execute("DELETE FROM Toy  WHERE ChildId={} AND Toy='{}'".format(selected_child[0][0], toy))
+                c.execute("DELETE FROM Toy  WHERE ChildId={} AND Name='{}'".format(selected_child[0][0], toy))
             except sqlite3.OperationalError:
                 pass
         conn.close()
 
     def change_delivery_status(self, child, status):
-        if status is True:
-            status = 1
+        print(status)
+
+        if status == True:
+            status_int = 1
         else:
-            status = 0
+            status_int = 0
+        print(status_int)
         with sqlite3.connect('bagofloot.db') as conn:
             c = conn.cursor()
             c.execute("""UPDATE Child
                 SET DeliveryStatus = {}
                 WHERE Name='{}'
-                """.format(status, child))
+                """.format(status_int, child))
         conn.close()
 
     def get_all_toys(self, child):
@@ -67,7 +72,7 @@ class Child(object):
         conn.close()
 
     def remove_all_toys(self, child):
-        with sqlite3.connect(bagofloot.db) as conn:
+        with sqlite3.connect('bagofloot.db') as conn:
             c = conn.cursor()
             c.execute("SELECT ChildId FROM Child WHERE Name='{}'".format(child))
             selected_child = c.fetchall()
